@@ -31,7 +31,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 | Check if two strings are anagrams                   | ✅     |
 | First non-repeating character                       | ✅     |
 | Group anagrams from a list of words                 | ✅     |
-| Build your own Hash Map from scratch                | 🔜     |
+| Build your own Hash Map from scratch                | ✅     |
 
 ---
 
