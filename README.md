@@ -30,10 +30,8 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 | Count frequency of characters in a string           | ✅     |
 | Check if two strings are anagrams                   | ✅     |
 | First non-repeating character                       | ✅     |
-| Group anagrams from a list of words                 | 🔜     |
-| Check if two strings are isomorphic                 | 🔜     |
-| Find all repeated substrings of fixed length        | 🔜     |
-| (Optional) Implement a HashSet using `unordered_set`| 🔜     |
+| Group anagrams from a list of words                 | ✅     |
+| Build your own Hash Map from scratch                | 🔜     |
 
 ---
 
