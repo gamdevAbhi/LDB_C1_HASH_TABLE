@@ -30,7 +30,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 | Check if two strings are anagrams                   | ✅     |
 | First non-repeating character                       | ✅     |
 | Group anagrams from a list of words                 | ✅     |
-| Build your own Hash Map from scratch                | ✅     |
+
 
 ---
 
@@ -38,6 +38,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 
 | Task | Status |
 |------|--------|
+| Build your own Hash Map from scratch (Open Addressing + Linear Probing) | ✅ |
 | Build hash set (custom) | 🔜 |
 | Implement Robin Hood hashing | 🔜 |
 | Benchmark linear probing vs. chaining | 🔜 |

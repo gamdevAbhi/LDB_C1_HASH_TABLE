@@ -2,11 +2,10 @@
 
 abstd::hash_map::hash_map() :
 bucket_size(8),
-element_size(0)
+element_size(0),
+tombstone_size(0)
 {
-    buckets = new abstd_bucket[bucket_size];
-
-    for(int i = 0; i < bucket_size; i++) buckets[i] = abstd_bucket();
+    buckets = new abstd_bucket[bucket_size] {abstd_bucket()};
 }
 
 abstd::hash_map::~hash_map()
@@ -14,35 +13,55 @@ abstd::hash_map::~hash_map()
     delete[] buckets;
 }
 
-void abstd::hash_map::insert(std::string key, int32_t value)
+/// @brief insert a pair into the hash map
+/// @param key 
+/// @param value 
+void abstd::hash_map::insert(int32_t key, const std::string_view value)
 {
+    double current_load = static_cast<double>(element_size) / bucket_size;
+
+    if(current_load >= max_threshold_limit) resize();
+    else if(current_load < min_threshold_limit && bucket_size > 8) desize();
+
     place_entry(key, value);
-    
-    double load_factor = static_cast<double>(element_size) / bucket_size;
-
-    if(load_factor >= 0.7) resize();
-    else if(load_factor < 0.3 && bucket_size > 8) desize();
 }
 
-int32_t abstd::hash_map::get(std::string key)
+/// @brief return the value which is associated with the key
+/// @param key 
+/// @return if the key found then it will return the value else return nullopt
+std::optional<std::string> abstd::hash_map::get(int32_t key)
 {
-    size_t index = find_slot(key, abstd_bucket::state::occupied);
-    return buckets[index].value;
+    size_t index = find_key(key);
+
+    if(index >= 0) return buckets[index].value;
+    else return std::nullopt;
 }
 
-bool abstd::hash_map::erase(std::string key)
+/// @brief check if the key exist in the hash map
+/// @param key 
+/// @return 
+bool abstd::hash_map::contains(int32_t key)
 {
-    try
+    return find_key(key) >= 0;
+}
+
+/// @brief for removing the key from the hash map
+/// @param key 
+/// @return if the key is deleted successfully or not
+bool abstd::hash_map::remove(int32_t key)
+{
+    size_t index = find_key(key);
+
+    if(index >= 0)
     {
-        size_t index = find_slot(key, abstd_bucket::state::occupied);
+        buckets[index].current_state = abstd_bucket::state::deleted;
+        tombstone_size++;
 
-        buckets[index].current_state = abstd_bucket::state::free;
+        if((tombstone_size % bucket_size) >= max_tombstone_limit) resize();
+
         return true;
     }
-    catch(const std::exception& ex)
-    {
-        return false;
-    }
+    else return false;
 }
 
 void abstd::hash_map::resize()
@@ -54,7 +73,12 @@ void abstd::hash_map::resize()
 
     element_size = 0;
 
-    for(int i = 0; i < old_bucket_size; i++) place_entry(old_bucket[i].key, old_bucket[i].value);
+    for(int i = 0; i < old_bucket_size; i++) 
+    {
+        if(old_bucket[i].current_state != abstd_bucket::state::occupied) continue;
+
+        place_entry(old_bucket[i].key, old_bucket[i].value);
+    }
 
     delete[] old_bucket;
 }
@@ -68,61 +92,63 @@ void abstd::hash_map::desize()
 
     element_size = 0;
 
-    for(int i = 0; i < old_bucket_size; i++) place_entry(old_bucket[i].key, old_bucket[i].value);
+    for(int i = 0; i < old_bucket_size; i++) 
+    {
+        if(old_bucket[i].current_state != abstd_bucket::state::occupied) continue;
+
+        place_entry(old_bucket[i].key, old_bucket[i].value);
+    }
 
     delete[] old_bucket;
 }
 
-size_t abstd::hash_map::find_slot(std::string key, abstd_bucket::state state)
+/// @brief use for finding the occupied key index
+/// @param key 
+/// @return 
+size_t abstd::hash_map::find_key(int32_t key)
 {
-    size_t hash_code = get_hash_code(key) % bucket_size;
+    size_t index = get_hash_code(key) % bucket_size;
 
     for(int i = 0; i < bucket_size; ++i)
     {
-        size_t index = (hash_code + i) % bucket_size;
+        size_t linear_probing = (index + i) % bucket_size;
 
-        if(buckets[index].key == key &&
-        buckets[index].current_state == state) return index; 
+        if(buckets[linear_probing].key == key && !buckets[linear_probing].is_available()) return linear_probing;
+        else if(buckets[linear_probing].current_state == abstd_bucket::state::empty) return -1;
     }
 
-    throw std::out_of_range("element not found");
+    return -1;
 }
 
-void abstd::hash_map::place_entry(std::string key, int32_t value)
+/// @brief the logic of inserting the pair into the hash map
+/// @param key 
+/// @param value 
+void abstd::hash_map::place_entry(int32_t key, const std::string_view value)
 {
-    size_t hash_code = get_hash_code(key) % bucket_size;
+    size_t index = get_hash_code(key) % bucket_size;
 
     for(int i = 0; i < bucket_size; ++i)
     {
-        size_t index = (hash_code + i) % bucket_size;
+        size_t linear_probing = (index + i) % bucket_size;
 
-        if(buckets[index].current_state == abstd_bucket::state::free ||
-        buckets[index].key == key)
+        if(buckets[linear_probing].key == key &&
+        buckets[linear_probing].current_state == abstd_bucket::state::occupied)
         {
-            buckets[index].key = key;
-            buckets[index].value = value;
-            buckets[index].current_state = abstd_bucket::state::occupied;
+            buckets[linear_probing].set_pair(key, value);
+            return;
+        }
+        else if(buckets[linear_probing].is_available())
+        {
+            buckets[linear_probing].set_pair(key, value);
             element_size++;
-            break;
+            return;
         }
     }
 }
 
-size_t abstd::hash_map::get_hash_code(std::string key)
+size_t abstd::hash_map::get_hash_code(int32_t key)
 {
-    size_t hash_code = 0xcbf29ce484222325;
-
-    for(int i = 0; i < key.size(); i++)
-    {
-        int64_t flip;
-
-        if((i + key[i]) % 2 == 0) flip = 0x100000001b1;
-        else flip = 0x100100001b8;
-        
-        hash_code = hash_code ^ (flip << (key[i] & 63));
-        hash_code *= 0x100000001b3;
-        hash_code = (hash_code << 5) | (hash_code >> 59);
-    }
+    size_t hash_code = std::hash<int32_t>()(key);
 
     return hash_code;
 }

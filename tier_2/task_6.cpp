@@ -8,9 +8,9 @@ int main()
 {
     abstd::hash_map hash_map;
 
-    hash_map.insert("hello", 12);
-    std::cout << hash_map.get("hello");
-    hash_map.erase("hello");
+    hash_map.insert(12, "mango");
+    std::cout << hash_map.get(12).value();
+    hash_map.remove(12);
     
     return 0;
 }

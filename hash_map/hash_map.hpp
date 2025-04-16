@@ -4,6 +4,11 @@
 #include <iostream>
 #include <string>
 #include <cstdint>
+#include <optional>
+
+constexpr double max_tombstone_limit = 0.50;
+constexpr double max_threshold_limit = 0.75;
+constexpr double min_threshold_limit = 0.30;
 
 namespace abstd
 {
@@ -12,29 +17,44 @@ namespace abstd
         public:
         hash_map();
         ~hash_map();
-        void insert(std::string key, int32_t value);
-        int32_t get(std::string key);
-        bool erase(std::string key);
+        void insert(int32_t key, const std::string_view value);
+        std::optional<std::string> get(int32_t key);
+        bool contains(int32_t key);
+        bool remove(int32_t key);
 
         private:
         struct bucket
         {
-            enum state {free, occupied};
+            enum state {empty, occupied, deleted};
             
-            std::string key;
-            int32_t value = 0;
-            enum state current_state = free;
+            int32_t key;
+            std::string value;
+            enum state current_state = empty;
+
+            void set_pair(int32_t key, const std::string_view value)
+            {
+                this->key = key;
+                this->value = value;
+                
+                current_state = state::occupied;
+            }
+
+            bool is_available()
+            {
+                return current_state == state::deleted || current_state == state::empty;
+            }
         } typedef abstd_bucket;
 
         abstd_bucket* buckets;
         size_t bucket_size;
         size_t element_size;
+        size_t tombstone_size;
 
         void resize();
         void desize();
-        size_t find_slot(std::string key, abstd_bucket::state state);
-        void place_entry(std::string key, int32_t value);
-        size_t get_hash_code(std::string key); 
+        size_t find_key(int32_t key);
+        void place_entry(int32_t key, const std::string_view value);
+        size_t get_hash_code(int32_t key); 
     };
 }
 
