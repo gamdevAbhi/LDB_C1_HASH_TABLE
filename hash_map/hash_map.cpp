@@ -18,12 +18,14 @@ abstd::hash_map::~hash_map()
 /// @param value 
 void abstd::hash_map::insert(int32_t key, const std::string_view value)
 {
+    if(element_size == bucket_size) resize();
+
+    place_entry(key, value);
+
     double current_load = static_cast<double>(element_size) / bucket_size;
 
     if(current_load >= max_threshold_limit) resize();
     else if(current_load < min_threshold_limit && bucket_size > 8) desize();
-
-    place_entry(key, value);
 }
 
 /// @brief return the value which is associated with the key
@@ -57,7 +59,7 @@ bool abstd::hash_map::remove(int32_t key)
         buckets[index].current_state = abstd_bucket::state::deleted;
         tombstone_size++;
 
-        if((tombstone_size % bucket_size) >= max_tombstone_limit) resize();
+        if((static_cast<double>(tombstone_size) / bucket_size) >= max_tombstone_limit) resize();
 
         return true;
     }
