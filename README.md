@@ -17,7 +17,6 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 # 🔍 Hash Table Learning, Doing, Building Cycle
 
 > Language Focus: **C++**  
-> Current Phase: **Tier 1 - Do Phase**  
 > Goal: Master hash tables through progressive practice, deep dives, and system-building.
 
 ---
@@ -37,28 +36,42 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 
 ## ⚙️ Tier 2: Build, Compare, Extend
 
-| Task                                                              | Status |
-|-------------------------------------------------------------------|--------|
-| Build basic hash map (open addressing + linear probing)           | 🔜     |
-| Build a hash set (custom)                                         | 🔜     |
-| Compare chaining vs. open addressing                              | 🔜     |
-| Implement Robin Hood hashing                                      | 🔜     |
-| Benchmark performance (collisions, load factor, resizing)         | 🔜     |
-| Use `std::hash` with custom structs                               | 🔜     |
+| Task | Status |
+|------|--------|
+| Build hash set (custom) | 🔜 |
+| Implement Robin Hood hashing | 🔜 |
+| Benchmark linear probing vs. chaining | 🔜 |
+| Optimize load factor and resizing | 🔜 |
+| Support custom key types with `std::hash` | 🔜 |
 
 ---
 
 ## 🔬 Tier 3: Advanced Topics & Real-World Exploration
 
-| Task                                                              | Status |
-|-------------------------------------------------------------------|--------|
-| Implement Cuckoo Hashing                                          | 🔜     |
-| Perfect hashing (explore theory + simple static example)          | 🔜     |
-| Simulate DoS attack via hash flooding                             | 🔜     |
-| Mitigate attack using salt/randomized hash                        | 🔜     |
-| Explore hashing with SIMD acceleration (read + experiment)        | 🔜     |
-| Memory layout & cache locality impact on hash tables              | 🔜     |
-| Case-insensitive + multilingual key support                       | 🔜     |
+| Task | Status |
+|------|--------|
+| Implement Cuckoo hashing | 🔜 |
+| Explore quadratic probing | 🔜 |
+| Analyze cache locality | 🔜 |
+| Implement simple perfect hashing | 🔜 |
+| Experiment with SIMD hashing | 🔜 |
+
+---
+
+## 🔨 Build Phase
+
+**Goal**: Create a reusable hash table library with multiple implementations (linear probing, chaining, Robin Hood, Cuckoo).
+
+**Deliverable**: A C++ header-only library (`abstd::hash_table`) with configurable collision strategies, generic key-value support, and benchmarks.
+
+**Features**:
+
+- Template-based generic hash map and set
+- Switchable collision handling (e.g., via policy classes)
+- Performance metrics (collisions, probe lengths, cache misses)
+- Utilities like iteration and serialization
+
+**Example Use Case**: Build a word frequency counter with multiple hash table backends to compare performance.
 
 ---
 
@@ -67,10 +80,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 - 🔹 **Learn Phase:** Research concepts deeply
 - 🔹 **Do Phase:** Solve problems, write utilities
 - 🔹 **Build Phase:** Create full-featured systems or toolsets
-- 🧠 Language Focus: C++ (C# later)
-
-
----
+- 🧠 Language Focus: C++
 
 ## 🧠 Learning Notes
 
