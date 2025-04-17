@@ -39,7 +39,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 | Task | Status |
 |------|--------|
 | Build your own Hash Map from scratch (Open Addressing + Linear Probing) | ✅ |
-| Build hash set (custom) | 🔜 |
+| Build hash set (custom) | ✅ |
 | Implement Robin Hood hashing | 🔜 |
 | Benchmark linear probing vs. chaining | 🔜 |
 | Optimize load factor and resizing | 🔜 |
