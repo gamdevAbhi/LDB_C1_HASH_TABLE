@@ -49,7 +49,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 | Task | Status |
 |------|--------|
 | Implement Robin Hood hashing | ✅ |
-| Implement Cuckoo hashing | 🔜 |
+| Implement Cuckoo hashing | ✅ |
 | Hash Flood mitigation | 🔜 |
 | Implement Perfect hashing | 🔜 |
 | Experiment with SIMD hashing | 🔜 |
