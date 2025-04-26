@@ -12,6 +12,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 - Implement a basic hash table from scratch in C++.
 - Focus on memory layout, performance, and correctness.
 - Learn about perfect hashing, cuckoo hashing, robin hood hashing, SIMD hashing
+
 ---
 
 # 🔍 Hash Table Learning, Doing, Building Cycle
@@ -31,7 +32,6 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 | First non-repeating character                       | ✅     |
 | Group anagrams from a list of words                 | ✅     |
 
-
 ---
 
 ## ⚙️ Tier 2: Build, Compare, Extend
@@ -39,11 +39,8 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 | Task | Status |
 |------|--------|
 | Build your own Hash Map from scratch (Open Addressing + Linear Probing) | ✅ |
-| Build hash set (custom) | ✅ |
-| Implement Robin Hood hashing | 🔜 |
-| Benchmark linear probing vs. chaining | 🔜 |
-| Optimize load factor and resizing | 🔜 |
-| Support custom key types with `std::hash` | 🔜 |
+| Build your own hash set (Chaining) | ✅ |
+| Benchmark linear probing vs. chaining | skip |
 
 ---
 
@@ -51,10 +48,10 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 
 | Task | Status |
 |------|--------|
+| Implement Robin Hood hashing | ✅ |
 | Implement Cuckoo hashing | 🔜 |
-| Explore quadratic probing | 🔜 |
-| Analyze cache locality | 🔜 |
-| Implement simple perfect hashing | 🔜 |
+| Hash Flood mitigation | 🔜 |
+| Implement Perfect hashing | 🔜 |
 | Experiment with SIMD hashing | 🔜 |
 
 ---
@@ -85,6 +82,7 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 
 ## 🧠 Learning Notes
 
+- As I am learning things.. codes might contains bugs and issues. this are not production ready code.
 > Every commit is part of the learning log — expect code experiments, cleanup, and iterations.
 > Final production-grade version (if any) will be moved to a separate repo in the `Build` phase.
 
