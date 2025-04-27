@@ -50,9 +50,8 @@ This repo focuses purely on the **Learn** and **Doing** phase — deep diving in
 |------|--------|
 | Implement Robin Hood hashing | ✅ |
 | Implement Cuckoo hashing | ✅ |
-| Hash Flood mitigation | 🔜 |
-| Implement Perfect hashing | 🔜 |
-| Experiment with SIMD hashing | 🔜 |
+| Hash Flood mitigation (use salt mitigation) | ✅ |
+| Implement Perfect hashing (not implemented) | ✅ |
 
 ---
 
